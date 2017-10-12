@@ -8,8 +8,7 @@ import sys
 import requests
 from uuid import uuid4
 from io import BytesIO
-from PIL import Image
-from PIL import ImageOps
+from PIL import Image, ImageOps
 
 
 # def get_stdin():
