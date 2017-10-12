@@ -37,9 +37,11 @@ Execute
 :------------------------------------|:--------------------|:-------------
 `url=http://example.com/image.jpg`   | mandatory option    | source image
 `fmt=png`                            | jpeg                | image format ([supported formats](http://pillow.readthedocs.io/en/latest/handbook/image-file-formats.html#image-file-formats))
-`scale=0.5`                          | 1.0 (100%)          | scale the image up/down (in percentage)
+`scale=0.5`                          | 1.0 (100%)          | scale the image up or down (in percentage)
 `gray=true`                          | false               | make the image black and white
-`negate=true`                        | false               | invert (negate) the image
+`invert=true`                        | false               | invert (negate) the image
+`flip=true  `                        | false               | flip the image vertically (top to bottom)
+`mirror=true`                        | false               | flip the image horizontally (left to right)
 
 **Note:** replace `<gateway_ip>:<gateway_port>` placeholders before execution
 
@@ -60,7 +62,7 @@ curl -sSL -X POST -o test.png 'http://<gateway_ip>:<gateway_port>/function/imgmo
 
 Scale image down to 60%, encode it to JPEG format and negate the colors
 ```
-curl -sSL -X POST -o test.jpg 'http://<gateway_ip>:<gateway_port>/function/imgmod?url=http://example.com/image.png&scale=0.6&fmt=jpg&negate=true'
+curl -sSL -X POST -o test.jpg 'http://<gateway_ip>:<gateway_port>/function/imgmod?url=http://example.com/image.png&scale=0.6&fmt=jpg&invert=true'
 ```
 
 

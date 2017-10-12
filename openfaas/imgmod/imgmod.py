@@ -9,8 +9,7 @@ import requests
 from uuid import uuid4
 from io import BytesIO
 from PIL import Image
-from PIL.ImageOps import invert
-from PIL.ImageOps import grayscale
+from PIL import ImageOps
 
 
 # def get_stdin():
@@ -44,14 +43,16 @@ def get_parms():
 def imgmod(**parms):
   """
   Image modifier function (output: byte stream)
-  supported parameters: url, format, scale, gray and negate
+  supported parameters: url, format, scale, gray and invert
   """
   # Collect values for supported parameters
   url = parms.get('url')
   fmt = parms.get('fmt') if parms.get('fmt') else 'jpeg'
   scale = parms.get('scale') if parms.get('scale') else 1.0
   gray = parms.get('gray') if parms.get('gray') else False
-  negate = parms.get('negate') if parms.get('negate') else False
+  invert = parms.get('invert') if parms.get('invert') else False
+  flip = parms.get('flip') if parms.get('flip') else False
+  mirror = parms.get('mirror') if parms.get('mirror') else False
 
   try:
     # Get image from the web
@@ -66,11 +67,19 @@ def imgmod(**parms):
 
     # Make image black and white
     if gray:
-      newimg = grayscale(newimg)
+      newimg = ImageOps.grayscale(newimg)
 
     # Invert (negate) the image
-    if negate:
-      newimg = invert(newimg)
+    if invert:
+      newimg = ImageOps.invert(newimg)
+
+    # Flip the image vertically (top to bottom)
+    if flip:
+      newimg = ImageOps.flip(newimg)
+
+    # Flip the image horizontally (left to right)
+    if mirror:
+      newimg = ImageOps.mirror(newimg)
 
     # Send image as byte stream on stdout
     fmt = 'jpeg' if fmt.lower() == 'jpg' else fmt
@@ -94,7 +103,9 @@ def main():
   parms = get_parms()
 
   parms['gray'] = True if parms.get('gray') == 'true' else False
-  parms['negate'] = True if parms.get('negate') == 'true' else False
+  parms['invert'] = True if parms.get('invert') == 'true' else False
+  parms['flip'] = True if parms.get('flip') == 'true' else False
+  parms['mirror'] = True if parms.get('mirror') == 'true' else False
 
   if parms.get('url'):
     imgmod(**parms)
