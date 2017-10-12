@@ -1,0 +1,9 @@
+provider:
+  name: faas
+  gateway: http://<gateway_ip>:<gateway_port>
+
+functions:
+  yamltojson:
+    lang: python
+    fprocess: python3 yaml2json.py
+    image: yaml2json:latest
