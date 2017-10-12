@@ -1,0 +1,9 @@
+provider:
+  name: faas
+  gateway: http://<gateway_ip>:<gateway_port>
+
+functions:
+  imgmod:
+    lang: python
+    fprocess: python3 imgmod.py
+    image: imgmod:latest
