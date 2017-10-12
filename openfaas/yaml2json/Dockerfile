@@ -1,4 +1,4 @@
-# docker build -t ops-mesos-registry.vast.com/functions/yaml2json .
+# docker build -t yaml2json .
 
 FROM python:3.6-alpine
 
