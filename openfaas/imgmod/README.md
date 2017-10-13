@@ -36,14 +36,14 @@ Execute
  **query string**                    | **default**         | **description**
 :------------------------------------|:--------------------|:-------------
 `url=http://example.com/image.jpg`   | mandatory option    | source image
-`fmt=png`                            | jpeg                | image format ([supported formats](http://pillow.readthedocs.io/en/latest/handbook/image-file-formats.html#image-file-formats))
-`scale=0.5`                          | 1.0 (100%)          | scale the image up or down (in percentage)
 `width=1920`                         | none                | explicitly change the image width (has precedence over scale)
 `height=1080`                        | none                | explicitly change the image height (has precedence over scale)
+`scale=0.5`                          | 1.0 (100%)          | scale the image up or down (in percentage)
 `gray=true`                          | false               | make the image black and white
 `invert=true`                        | false               | invert (negate) the image
 `flip=true  `                        | false               | flip the image vertically (top to bottom)
 `mirror=true`                        | false               | flip the image horizontally (left to right)
+`fmt=png`                            | jpeg                | image format ([supported formats](http://pillow.readthedocs.io/en/latest/handbook/image-file-formats.html#image-file-formats))
 
 **Note:** replace `<gateway_ip>:<gateway_port>` placeholders before execution
 
