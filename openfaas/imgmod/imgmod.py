@@ -42,7 +42,8 @@ def get_parms():
 def imgmod(**parms):
   """
   Image modifier function (output: byte stream)
-  supported parameters: url, format, scale, gray and invert
+  supported parameters:
+    url, width, height, scale, gray, invert, flip, mirror and fmt
   """
   # Collect values for supported parameters
   url = parms.get('url')
