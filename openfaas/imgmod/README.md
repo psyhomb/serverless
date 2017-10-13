@@ -35,7 +35,7 @@ Execute
 
  **query string**                    | **default**         | **description**
 :------------------------------------|:--------------------|:-------------
-`url=http://example.com/image.jpg`   | mandatory option    | source image
+`url=http://example.com/image.jpg`   | mandatory parameter | source image
 `width=1920`                         | none                | explicitly change the image width (has precedence over scale)
 `height=1080`                        | none                | explicitly change the image height (has precedence over scale)
 `scale=0.5`                          | 1.0 (100%)          | scale the image up or down (in percentage)
