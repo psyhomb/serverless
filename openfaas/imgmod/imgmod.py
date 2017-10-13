@@ -46,14 +46,14 @@ def imgmod(**parms):
   """
   # Collect values for supported parameters
   url = parms.get('url')
-  fmt = parms.get('fmt') if parms.get('fmt') else 'jpeg'
+  width = parms.get('width')
+  height = parms.get('height')
   scale = parms.get('scale') if parms.get('scale') else 1.0
-  width = parms.get('width') if parms.get('width') else None
-  height = parms.get('height') if parms.get('height') else None
   gray = parms.get('gray') if parms.get('gray') else False
   invert = parms.get('invert') if parms.get('invert') else False
   flip = parms.get('flip') if parms.get('flip') else False
   mirror = parms.get('mirror') if parms.get('mirror') else False
+  fmt = parms.get('fmt') if parms.get('fmt') else 'jpeg'
 
   try:
     # Get image from the web
