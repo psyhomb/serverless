@@ -4,6 +4,6 @@ provider:
 
 functions:
   yamltojson:
-    lang: python
+    lang: python3
     fprocess: python3 yaml2json.py
     image: yaml2json:latest
