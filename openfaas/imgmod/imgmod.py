@@ -48,6 +48,8 @@ def imgmod(**parms):
   url = parms.get('url')
   fmt = parms.get('fmt') if parms.get('fmt') else 'jpeg'
   scale = parms.get('scale') if parms.get('scale') else 1.0
+  width = parms.get('width') if parms.get('width') else None
+  height = parms.get('height') if parms.get('height') else None
   gray = parms.get('gray') if parms.get('gray') else False
   invert = parms.get('invert') if parms.get('invert') else False
   flip = parms.get('flip') if parms.get('flip') else False
@@ -59,10 +61,17 @@ def imgmod(**parms):
 
     # Open and resize the image
     img = Image.open(BytesIO(r.content))
-    newimg = img.resize([
-        int(size * float(scale))
-        for size in img.size
-      ])
+    if width and height:
+      newimg = img.resize((int(width), int(height)))
+    elif width:
+      newimg = img.resize((int(width), img.height))
+    elif height:
+      newimg = img.resize((img.width, int(height)))
+    else:
+      newimg = img.resize([
+          int(size * float(scale))
+          for size in img.size
+        ])
 
     # Make image black and white
     if gray:
