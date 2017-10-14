@@ -39,14 +39,9 @@ Convert YAML to JSON
 curl -sSL -X POST --data-binary '@test.yaml' 'http://<gateway_ip>:<gateway_port>/function/yamltojson'
 ```
 
-Convert JSON to YAML (querystring parameter)
+Convert JSON to YAML
 ```
 curl -sSL -X POST --data-binary '@test.json' 'http://<gateway_ip>:<gateway_port>/function/yamltojson?reverse=true'
-```
-
-Convert JSON to YAML (request header parameter)
-```
-curl -sSL -X POST -H 'X-REVERSE-CONVERSION: true' --data-binary '@test.json' 'http://<gateway_ip>:<gateway_port>/function/yamltojson'
 ```
 
 
