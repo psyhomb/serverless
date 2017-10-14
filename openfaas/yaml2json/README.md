@@ -14,7 +14,7 @@ Deploy
 ------
 
 Deploy function  
-**Note:** replace `gateway: http://<gateway_ip>:<gateway_port>` and `image: yaml2json:latest` before deploy
+**Note:** replace `gateway: http://<gateway_ip>:<gateway_port>` and `image: yaml2json` before deploy
 ```
 faas-cli deploy -f yaml2json.yaml
 ```

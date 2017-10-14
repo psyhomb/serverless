@@ -1,18 +1,18 @@
-# docker build -t yaml2json .
+# docker build -t <function_name> .
 
-FROM python:3.6-alpine
+FROM python:3-alpine
 
-WORKDIR /data/yaml2json
+ENV fprocess="python3 run.py" \
+    cgi_headers="true"
+
+WORKDIR /src
 
 COPY . .
 
 ADD https://github.com/openfaas/faas/releases/download/0.6.6c/fwatchdog /usr/bin
 RUN chmod +x /usr/bin/fwatchdog \
- && pip3 install -r requirements.txt \
- && rm -vf requirements.txt
-
-ENV fprocess="python3 yaml2json.py" \
-    cgi_headers="true"
+ && pip3 install -r requirements.txt -r function/requirements.txt \
+ && rm -vf requirements.txt function/requirements.txt
 
 HEALTHCHECK --interval=1s CMD [ -e /tmp/.lock ] || exit 1
 

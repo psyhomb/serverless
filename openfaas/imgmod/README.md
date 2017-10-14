@@ -24,7 +24,7 @@ Deploy
 ------
 
 Deploy function  
-**Note:** replace `gateway: http://<gateway_ip>:<gateway_port>` and `image: imgmod:latest` before deploy
+**Note:** replace `gateway: http://<gateway_ip>:<gateway_port>` and `image: imgmod` before deploy
 ```
 faas-cli deploy -f imgmod.yaml
 ```

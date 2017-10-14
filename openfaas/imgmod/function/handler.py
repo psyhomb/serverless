@@ -1,7 +1,8 @@
-#!/usr/bin/env python3
 # Author: Milos Buncic
-# Date: 2017/10/10
-# Description: Image modifier (OpenFaaS function)
+# Date: 2017/10/14
+# Description: Image modifier function (output: byte stream)
+# Supported parameters:
+#   url, width, height, scale, gray, invert, flip, mirror and fmt
 
 import os
 import sys
@@ -11,49 +12,16 @@ from io import BytesIO
 from PIL import Image, ImageOps
 
 
-# def get_stdin():
-#   """
-#   Collect data received on stdin (output: string)
-#   """
-#   s = ''
-#   for l in sys.stdin:
-#     s += l
-#
-#   return s
-
-
-def get_parms():
-  """
-  Collect query string parameters (output: dict)
-  """
-  d = {}
-
-  qs = os.environ.get('Http_Query')
-
-  if qs is not None and '=' in qs:
-    qs = qs[qs.find('?')+1:]
-    for e in qs.split('&'):
-      for k,v in [e.split('=')]:
-        d[k] = v
-
-  return d
-
-
-def imgmod(**parms):
-  """
-  Image modifier function (output: byte stream)
-  supported parameters:
-    url, width, height, scale, gray, invert, flip, mirror and fmt
-  """
+def handle(data, **parms):
   # Collect values for supported parameters
   url = parms.get('url')
   width = parms.get('width')
   height = parms.get('height')
   scale = parms.get('scale') if parms.get('scale') else 1.0
-  gray = parms.get('gray') if parms.get('gray') else False
-  invert = parms.get('invert') if parms.get('invert') else False
-  flip = parms.get('flip') if parms.get('flip') else False
-  mirror = parms.get('mirror') if parms.get('mirror') else False
+  gray = True if parms.get('gray') == 'true' else False
+  invert = True if parms.get('invert') == 'true' else False
+  flip = True if parms.get('flip') == 'true' else False
+  mirror = True if parms.get('mirror') == 'true' else False
   fmt = parms.get('fmt') if parms.get('fmt') else 'jpeg'
 
   try:
@@ -106,25 +74,3 @@ def imgmod(**parms):
       os.remove(filename)
     except:
       pass
-
-
-def main():
-  parms = get_parms()
-
-  parms['gray'] = True if parms.get('gray') == 'true' else False
-  parms['invert'] = True if parms.get('invert') == 'true' else False
-  parms['flip'] = True if parms.get('flip') == 'true' else False
-  parms['mirror'] = True if parms.get('mirror') == 'true' else False
-
-  if parms.get('url'):
-    imgmod(**parms)
-  else:
-    print(
-      'Missing URL parameter in the query string',
-      'e.g. /?url=http://example.com/image.jpeg',
-      file=sys.stderr
-    )
-
-
-if __name__ == '__main__':
-  main()
