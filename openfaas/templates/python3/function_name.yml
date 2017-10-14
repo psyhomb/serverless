@@ -1,0 +1,9 @@
+provider:
+  name: faas
+  gateway: http://<gateway_ip>:<gateway_port>
+
+functions:
+  <function_name>:
+    lang: python3
+    fprocess: python3 run.py
+    image: <function_name>
