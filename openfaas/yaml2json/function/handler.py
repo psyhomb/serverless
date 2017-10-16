@@ -8,31 +8,31 @@ import json
 import yaml
 
 
+def yaml2json(data):
+  """
+  Convert YAML to JSON (output: JSON)
+  """
+  try:
+    d = yaml.load(data, Loader=yaml.BaseLoader)
+  except Exception as e:
+    d = {'error': '{}'.format(e)}
+
+  return json.dumps(d)
+
+
+def json2yaml(data):
+  """
+  Convert JSON to YAML (output: YAML)
+  """
+  try:
+    d = json.loads(data)
+  except Exception as e:
+    d = {'error': '{}'.format(e)}
+
+  return yaml.dump(d, default_flow_style=False)
+
+
 def handle(data, **parms):
-  def yaml2json(ydata):
-    """
-    Convert YAML to JSON (output: JSON)
-    """
-    try:
-      d = yaml.load(ydata, Loader=yaml.BaseLoader)
-    except Exception as e:
-      d = {'error': '{}'.format(e)}
-
-    return json.dumps(d)
-
-
-  def json2yaml(jdata):
-    """
-    Convert JSON to YAML (output: YAML)
-    """
-    try:
-      d = json.loads(jdata)
-    except Exception as e:
-      d = {'error': '{}'.format(e)}
-
-    return yaml.dump(d, default_flow_style=False)
-
-
   if parms.get('reverse') == 'true':
     print(json2yaml(data))
   else:
