@@ -8,7 +8,6 @@ import os
 import sys
 import json
 import requests
-from uuid import uuid4
 from io import BytesIO
 from PIL import Image, ImageOps
 
@@ -70,14 +69,12 @@ def imgmod(image, **parms):
     if parms['mirror']:
       newimg = ImageOps.mirror(newimg)
 
-    # Send image as byte stream on stdout
+    # Send image as byte stream to stdout
     parms['fmt'] = 'jpeg' if parms['fmt'].lower() == 'jpg' else parms['fmt']
-    filename = '/dev/shm/{}.{}'.format(
-        uuid4(), parms['fmt']
-      ).replace('-', '')
-    newimg.save(filename, parms['fmt'])
-    with open(filename, 'rb') as f:
-      sys.stdout.buffer.write(f.read())
+    out_file = BytesIO()
+    newimg.save(out_file, parms['fmt'])
+    out_file.seek(0)
+    sys.stdout.buffer.write(out_file.read())
   except Exception as e:
     print('error: {}'.format(e), file=sys.stderr)
   finally:
@@ -85,7 +82,7 @@ def imgmod(image, **parms):
       # Cleanup
       newimg.close()
       img.close()
-      os.remove(filename)
+      out_file.close()
     except:
       pass
 
