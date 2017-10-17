@@ -30,8 +30,8 @@ faas-cli deploy -f imgmod.yaml
 ```
 
 
-Execute
--------
+Invoke
+------
 
  **query string**                    | **default**         | **description**
 :------------------------------------|:--------------------|:-------------
@@ -70,6 +70,32 @@ curl -sSL -X POST -o test.jpg 'http://<gateway_ip>:<gateway_port>/function/imgmo
 Change the image width and height (1280x720) explicitly
 ```
 curl -sSL -X POST -o test.jpg 'http://<gateway_ip>:<gateway_port>/function/imgmod?url=http://example.com/image.png&width=1280&height=720'
+```
+
+
+or you can send any of these parameters via body payload in json format  
+**Note:** boolean values must be enclosed within quotes
+```json
+{
+  "url": "http://example.com/image.jpg",
+  "gray": "true"
+}
+```
+
+```
+echo -n '{"url": "http://example.com/image.png", "gray": "true"}' | faas-cli invoke -f imgmod.yaml --name imgmod > test.jpg
+```
+
+```
+cat parms.json | faas-cli invoke -f imgmod.yaml --name imgmod > test.jpg
+```
+
+```
+curl -sSL -X POST -d '{"url": "http://example.com/image.png", "gray": "true"}' -o test.jpg 'http://<gateway_ip>:<gateway_port>/function/imgmod'
+```
+
+```
+curl -sSL -X POST -d '@parms.json' -o test.jpg 'http://<gateway_ip>:<gateway_port>/function/imgmod'
 ```
 
 

@@ -20,8 +20,8 @@ faas-cli deploy -f yaml2json.yaml
 ```
 
 
-Execute
--------
+Invoke
+------
 
 ### faas-cli
 
