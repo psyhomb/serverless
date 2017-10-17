@@ -20,7 +20,7 @@ def json2dict(data):
   try:
     return json.loads(data)
   except Exception as e:
-    print('error: {}'.format(e))
+    print('error: {}'.format(e), file=sys.stderr)
     sys.exit()
 
 
@@ -31,7 +31,7 @@ def get_img(url, timeout=60):
   try:
     return requests.get(url, timeout=timeout).content
   except Exception as e:
-    print('error: {}'.format(e))
+    print('error: {}'.format(e), file=sys.stderr)
     sys.exit()
 
 
