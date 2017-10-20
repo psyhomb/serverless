@@ -2,7 +2,17 @@
 # Date: 2017/10/14
 # Description: Image modifier function (output: byte stream)
 # Supported parameters:
-#   url, width, height, scale, gray, invert, flip, mirror and fmt
+#   parms = {
+#     'url': (str,),
+#     'width': (int,),
+#     'height': (int,),
+#     'scale': (float,),
+#     'gray': (bool,),
+#     'invert': (bool,),
+#     'flip': (bool,),
+#     'mirror': (bool,),
+#     'fmt': (str,)
+#   }
 
 import os
 import sys
@@ -18,8 +28,8 @@ def json2dict(data):
   """
   try:
     return json.loads(data)
-  except Exception as e:
-    print('error: {}'.format(e), file=sys.stderr)
+  except ValueError as e:
+    print('error: Bad JSON format: {}'.format(e), file=sys.stderr)
     sys.exit()
 
 
@@ -28,10 +38,19 @@ def get_img(url, timeout=60):
   Make request and return binary content
   """
   try:
-    return requests.get(url, timeout=timeout).content
+    r = requests.get(url, timeout=timeout)
   except Exception as e:
     print('error: {}'.format(e), file=sys.stderr)
     sys.exit()
+  else:
+    if r.status_code == 200:
+      return r.content
+    else:
+      print(
+        'error: Image fetching failed, http code: {}'.format(r.status_code),
+        file=sys.stderr
+      )
+      sys.exit()
 
 
 def imgmod(image, **parms):
@@ -39,40 +58,46 @@ def imgmod(image, **parms):
   Image modifier (output: byte stream)
   """
   try:
-    # Open and resize the image
+    # Open the image
     img = Image.open(BytesIO(image))
-    if parms['width'] and parms['height']:
-      newimg = img.resize((int(parms['width']), int(parms['height'])))
-    elif parms['width']:
-      newimg = img.resize((int(parms['width']), img.height))
-    elif parms['height']:
-      newimg = img.resize((img.width, int(parms['height'])))
-    else:
-      newimg = img.resize([
-          int(size * float(parms['scale']))
-          for size in img.size
-        ])
 
-    # Make image black and white
-    if parms['gray']:
-      newimg = ImageOps.grayscale(newimg)
+    # Apply image modifiers
+    if parms:
+      # Resize the image
+      if parms.get('width') and parms.get('height'):
+        img = img.resize((int(parms['width']), int(parms['height'])))
+      elif parms.get('width'):
+        img = img.resize((int(parms['width']), img.height))
+      elif parms.get('height'):
+        img = img.resize((img.width, int(parms['height'])))
+      elif parms.get('scale'):
+        img = img.resize([
+            int(size * float(parms['scale']))
+            for size in img.size
+          ])
 
-    # Invert (negate) the image
-    if parms['invert']:
-      newimg = ImageOps.invert(newimg)
+      # Make image black and white
+      if parms.get('gray'):
+        img = ImageOps.grayscale(img)
 
-    # Flip the image vertically (top to bottom)
-    if parms['flip']:
-      newimg = ImageOps.flip(newimg)
+      # Invert (negate) the image
+      if parms.get('invert'):
+        img = ImageOps.invert(img)
 
-    # Flip the image horizontally (left to right)
-    if parms['mirror']:
-      newimg = ImageOps.mirror(newimg)
+      # Flip the image vertically (top to bottom)
+      if parms.get('flip'):
+        img = ImageOps.flip(img)
+
+      # Flip the image horizontally (left to right)
+      if parms.get('mirror'):
+        img = ImageOps.mirror(img)
+
+    # Define desired image format (default: 'jpeg')
+    fmt = parms.get('fmt') if parms.get('fmt') else 'jpeg'
 
     # Send image as byte stream to stdout
-    parms['fmt'] = 'jpeg' if parms['fmt'].lower() == 'jpg' else parms['fmt']
     out_file = BytesIO()
-    newimg.save(out_file, parms['fmt'])
+    img.save(out_file, fmt)
     out_file.seek(0)
     sys.stdout.buffer.write(out_file.read())
   except Exception as e:
@@ -80,7 +105,6 @@ def imgmod(image, **parms):
   finally:
     try:
       # Cleanup
-      newimg.close()
       img.close()
       out_file.close()
     except:
@@ -94,29 +118,23 @@ def handle(data, **parms):
   # Collect parms from stdin (json), if they don't exist, try query strings
   parms = json2dict(data) if data else parms
 
-  cfg_parms = [
-    'url',
-    'width',
-    'height',
-    'scale',
-    'gray',
-    'invert',
-    'flip',
-    'mirror',
-    'fmt'
-  ]
+  # Supported parameters
+  cfg_parms = {
+    'url': (str,),
+    'width': (int,),
+    'height': (int,),
+    'scale': (float,),
+    'gray': (bool,),
+    'invert': (bool,),
+    'flip': (bool,),
+    'mirror': (bool,),
+    'fmt': (str,)
+  }
 
-  # Collect defined and set default values for supported parameters
+  # Convert some of the parameters to boolean data type
   for p in cfg_parms:
-    if p in ['url', 'width', 'height']:
-      parms[p] = parms.get(p)
-    elif p == 'scale':
-      parms[p] = parms.get(p) if parms.get(p) else 1.0
-    elif p == 'fmt':
-      parms[p] = parms.get(p) if parms.get(p) else 'jpeg'
-    else:
-      # gray, invert, flip, mirror
+    if p in ['gray', 'invert', 'flip', 'mirror']:
       parms[p] = True if parms.get(p) == 'true' else False
 
   # Start modifying the image
-  imgmod(get_img(parms['url']), **parms)
+  imgmod(get_img(parms.get('url')), **parms)

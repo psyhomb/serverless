@@ -38,7 +38,7 @@ Invoke
 `url=http://example.com/image.jpg`   | mandatory parameter | source image
 `width=1920`                         | none                | explicitly change the image width (has precedence over scale)
 `height=1080`                        | none                | explicitly change the image height (has precedence over scale)
-`scale=0.5`                          | 1.0 (100%)          | scale the image up or down (in percentage)
+`scale=0.5`                          | none                | scale the image up or down (percentage in decimal form)
 `gray=true`                          | false               | make the image black and white
 `invert=true`                        | false               | invert (negate) the image
 `flip=true  `                        | false               | flip the image vertically (top to bottom)
@@ -47,7 +47,7 @@ Invoke
 
 **Note:** replace `<gateway_ip>:<gateway_port>` placeholders before execution
 
-Keep original image size just encode it to JPEG format
+Keep original image just encode it to JPEG format
 ```
 curl -sSL -X POST -o test.jpg 'http://<gateway_ip>:<gateway_port>/function/imgmod?url=http://example.com/image.png'
 ```
