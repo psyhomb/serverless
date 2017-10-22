@@ -16,7 +16,7 @@ Build
 
 Build docker image
 ```
-docker build --no-cache -t imgmod .
+faas-cli build --no-cache --image imgmod --name imgmod --lang Dockerfile --handler .
 ```
 
 
