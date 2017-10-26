@@ -1,0 +1,43 @@
+# Serverless configuration file
+
+service: imgmod
+
+provider:
+  name: aws
+  runtime: python3.6
+  memorySize: 256
+  timeout: 40
+  stage: dev
+  region: eu-central-1
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - "s3:PutObject"
+      Resource: "arn:aws:s3:::${self:custom.bucket}/*"
+  environment:
+    BUCKET: ${self:custom.bucket}
+
+custom:
+  bucket: imgmod-test
+  pythonRequirements:
+    dockerizePip: true
+
+functions:
+  imgmod:
+    handler: handler.imgmod
+    events:
+      - http:
+          path: imgmod
+          method: post
+          cors: true
+
+resources:
+  Resources:
+    UploadBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: ${self:custom.bucket}
+        AccessControl: Private
+
+# plugins:
+#   - serverless-python-requirements
