@@ -51,6 +51,3 @@ resources:
       Properties:
         BucketName: ${self:custom.bucket}
         AccessControl: Private
-
-plugins:
-  - serverless-python-requirements
