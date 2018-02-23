@@ -17,4 +17,10 @@ var/
 *.egg
 
 # Serverless directories
+node_modules
+package.json
+package-lock.json
 .serverless
+
+# VSCode
+.vscode

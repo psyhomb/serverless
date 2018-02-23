@@ -8,7 +8,19 @@ provider:
   memorySize: 256
   timeout: 40
   stage: dev
-  region: eu-central-1
+  region: us-east-1
+
+  apiKeys:
+    - ${opt:stage, self:provider.stage}-8893e864ebc52540953cfb2b9c5d4690
+  usagePlan:
+    quota:
+      limit: 1000
+      offset: 2
+      period: MONTH
+    throttle:
+      burstLimit: 200
+      rateLimit: 100
+
   iamRoleStatements:
     - Effect: "Allow"
       Action:
@@ -29,6 +41,7 @@ functions:
       - http:
           path: imgmod
           method: post
+          private: true
           cors: true
 
 resources:
@@ -39,5 +52,5 @@ resources:
         BucketName: ${self:custom.bucket}
         AccessControl: Private
 
-# plugins:
-#   - serverless-python-requirements
+plugins:
+  - serverless-python-requirements
