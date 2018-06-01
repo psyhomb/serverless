@@ -1,0 +1,42 @@
+# Serverless configuration file
+
+service: ec2-tags
+
+provider:
+  name: aws
+  runtime: python3.6
+  memorySize: 128
+  timeout: 40
+  stage: prod
+  region: us-east-1
+
+  apiKeys:
+    - ${opt:stage, self:provider.stage}-4791e854ffa53945954cfe2c9b5f4531
+  usagePlan:
+    quota:
+      limit: 1000
+      offset: 2
+      period: MONTH
+    throttle:
+      burstLimit: 200
+      rateLimit: 100
+
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - "ec2:DescribeTags"
+      Resource: "*"
+
+custom:
+  pythonRequirements:
+    dockerizePip: true
+
+functions:
+  ftags:
+    handler: handler.ftags
+    events:
+      - http:
+          path: ftags
+          method: get
+          private: true
+          cors: true
