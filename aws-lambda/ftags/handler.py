@@ -45,13 +45,13 @@ def ftags(event, context):
   """
   # print(event)
 
-  print('Retrieving instance id...')
+  print('Retrieving instance id from querystring')
   instance_id = ''
   if event.get('queryStringParameters', {}):
     instance_id = event.get('queryStringParameters').get('instance_id', '')
 
   if instance_id:
-    print('Fetching EC2 tags...')
+    print('Fetching EC2 tags for instance id: {}'.format(instance_id))
     tags = collect_tags(instance_id)
 
     status_code = 200
