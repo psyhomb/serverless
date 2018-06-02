@@ -4,14 +4,15 @@ service: ec2-tags
 
 provider:
   name: aws
+  endpointType: REGIONAL
   runtime: python3.6
   memorySize: 128
   timeout: 40
   stage: prod
   region: us-east-1
-
   apiKeys:
-    - ${opt:stage, self:provider.stage}-4791e854ffa53945954cfe2c9b5f4531
+    - ${opt:stage, self:provider.stage}-test
+
   usagePlan:
     quota:
       limit: 1000

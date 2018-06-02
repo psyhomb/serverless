@@ -11,7 +11,7 @@ provider:
   region: us-east-1
 
   apiKeys:
-    - ${opt:stage, self:provider.stage}-8893e864ebc52540953cfb2b9c5d4690
+    - ${opt:stage, self:provider.stage}-test
   usagePlan:
     quota:
       limit: 1000

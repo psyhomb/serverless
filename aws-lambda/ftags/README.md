@@ -23,12 +23,12 @@ Deploy
 
 **Note:** Use `x-api-key` header on the client side if you want to provide valid API key to the API Gateway
 
-**WARNING:** API key currently configured in `serverless.yaml` file is just an example, `PLEASE USE YOUR OWN API KEY` (replace `<API_KEY>`)
+**Note:** API key specified under `apiKeys` section is just a name, `API_KEY` itself will be automatically generated and printed out at the end once the deploy has completed successfully.
 
 ```yaml
 provider:
   apiKeys:
-    - ${opt:stage, self:provider.stage}-<API_KEY>
+    - ${opt:stage, self:provider.stage}-<API_KEY_NAME>
 ```
 
 Install required plugins
