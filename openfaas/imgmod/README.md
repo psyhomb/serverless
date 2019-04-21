@@ -91,11 +91,11 @@ or you can send any of these parameters via body payload in json format
 ```
 
 ```bash
-echo -n '{"url": "http://example.com/image.png", "gray": "true"}' | faas-cli invoke imgmod -f imgmod.yaml > test.jpg
+echo -n '{"url": "http://example.com/image.png", "gray": "true"}' | faas-cli invoke imgmod > test.jpg
 ```
 
 ```bash
-cat parms.json | faas-cli invoke imgmod -f imgmod.yaml > test.jpg
+cat parms.json | faas-cli invoke imgmod > test.jpg
 ```
 
 ```plain
