@@ -32,6 +32,8 @@ Deploy function
 faas-cli deploy -f imgmod.yaml
 ```
 
+![openfaas](https://user-images.githubusercontent.com/1824874/56476270-840f2300-6495-11e9-83c8-53d8b0e4cfea.png)
+
 Invoke
 ------
 
