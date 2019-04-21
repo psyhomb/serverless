@@ -2,14 +2,14 @@
 
 FROM python:3-alpine
 
-ENV fprocess="python3 run.py" \
+ENV fprocess="python3 index.py" \
     cgi_headers="true"
 
 WORKDIR /src
 
 COPY . .
 
-ADD https://github.com/openfaas/faas/releases/download/0.6.6c/fwatchdog /usr/bin
+ADD https://github.com/openfaas/faas/releases/download/0.13.0/fwatchdog /usr/bin
 RUN chmod +x /usr/bin/fwatchdog \
  && apk add --no-cache build-base jpeg-dev zlib-dev freetype-dev lcms2-dev openjpeg-dev tiff-dev tk-dev tcl-dev \
  && pip3 install -r requirements.txt -r function/requirements.txt \

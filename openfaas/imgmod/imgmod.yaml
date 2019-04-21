@@ -5,5 +5,5 @@ provider:
 functions:
   imgmod:
     lang: python3
-    fprocess: python3 run.py
+    fprocess: python3 index.py
     image: imgmod
